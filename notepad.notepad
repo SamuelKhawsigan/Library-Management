@@ -3,45 +3,110 @@ javac -d bin
 /home/komorebi/Library-ManagementSys/src/library.java
 /home/komorebi/Library-ManagementSys/src/LibMan.java
 
+```graph-spec
+public class Student {
+    private String id;
+    private String name;
+    private String program;
+
+    public Student(String id, String name, String program) {
+        this.id = id;
+        this.name = name;
+        this.program = program;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Program: " + program;
+    }
+}
+
+```
+
 java -cp bin LibMan.java
 
 ```graph-spec
 import java.util.ArrayList;
+import java.util.List;
 
 public class Library {
-    private ArrayList<Book> books; // List to store books
+    private List<Book> books;      // Stores books
+    private List<Student> students; // Stores registered students
 
-    // Constructor
     public Library() {
-        this.books = new ArrayList<>();
+        books = new ArrayList<>();
+        students = new ArrayList<>();
     }
 
-    // Add a new book
+    // Add a book to the library
     public void addBook(Book book) {
         books.add(book);
-        System.out.println("Book added: " + book.getTitle());
+        System.out.println("Book added successfully: " + book.getTitle());
     }
 
-    // Display all books
-    public void showAllBooks() {
-        if (books.isEmpty()) {
-            System.out.println("No books in the library.");
-            return;
-        }
-        System.out.println("\nList of books in the library:");
+    // Update the quantity of a book
+    public void updateBookQuantity(String title, int quantity) {
         for (Book book : books) {
-            book.displayBook();
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                book.setQuantity(quantity);
+                System.out.println("Updated quantity for book: " + title);
+                return;
+            }
         }
+        System.out.println("Book not found: " + title);
     }
 
     // Search for a book by title
-    public Book searchBook(String title) {
+    public void searchBook(String title) {
         for (Book book : books) {
             if (book.getTitle().equalsIgnoreCase(title)) {
-                return book; // Book found
+                System.out.println("Book found: " + book);
+                return;
             }
         }
-        return null; // Book not found
+        System.out.println("Book not found: " + title);
+    }
+
+    // Show all books in the library
+    public void showAllBooks() {
+        if (books.isEmpty()) {
+            System.out.println("\nNo books available in the library.");
+        } else {
+            System.out.println("\nList of books in the library:");
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+
+    // Register a new student
+    public void registerStudent(Student student) {
+        students.add(student);
+        System.out.println("Student registered successfully: " + student.getName());
+    }
+
+    // Show all registered students
+    public void showAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("\nNo students are registered yet.");
+        } else {
+            System.out.println("\nList of registered students:");
+            for (Student student : students) {
+                System.out.println(student);
+            }
+        }
     }
 }
 
@@ -55,27 +120,49 @@ public class LibraryManagementSystem {
         Scanner scanner = new Scanner(System.in);
         Library library = new Library();
 
-        // Adding sample books
+        // Sample books
         library.addBook(new Book("Java Programming", "James Gosling", 5));
-        library.addBook(new Book("The Art of Computer Programming", "Donald Knuth", 2));
         library.addBook(new Book("Clean Code", "Robert C. Martin", 3));
 
-        // Show all books
-        library.showAllBooks();
+        while (true) {
+            System.out.println("\nLibrary Management System");
+            System.out.println("1. Show all books");
+            System.out.println("2. Register a student");
+            System.out.println("3. Show all students");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        // Search for a book
-        System.out.print("\nEnter book title to search: ");
-        String searchTitle = scanner.nextLine();
-        Book foundBook = library.searchBook(searchTitle);
+            switch (choice) {
+                case 1:
+                    library.showAllBooks();
+                    break;
+                case 2:
+                    System.out.print("Enter student ID: ");
+                    String id = scanner.nextLine();
 
-        if (foundBook != null) {
-            System.out.println("Book found:");
-            foundBook.displayBook();
-        } else {
-            System.out.println("Book not found.");
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+
+                    System.out.print("Enter student program: ");
+                    String program = scanner.nextLine();
+
+                    Student newStudent = new Student(id, name, program);
+                    library.registerStudent(newStudent);
+                    break;
+                case 3:
+                    library.showAllStudents();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option! Try again.");
+            }
         }
-
-        scanner.close();
     }
 }
+
 ```

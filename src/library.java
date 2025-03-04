@@ -13,45 +13,75 @@
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class library {
-    private ArrayList<book> books; //List to store books
+    private List<book> books; //List to store books
+    private List<student> students; //Stores registered students
 
-
-    //Constructor //!When we create a Library object, we initialize the books list to store books.
     public library() {
-        this.books = new ArrayList<>();
+        books = new ArrayList<>();
+        students = new ArrayList<>();
     }
 
-
-    //Add a new book
-    public void addBook(book book) {
+      // Add a book to the library
+      public void addBook(book book) {
         books.add(book);
-        System.out.println("Book added: " + book.getTitle());
+        System.out.println("Book added successfully: " + book.getTitle());
     }
 
-
-    //Display all books
-    public void showAllBooks() {
-        if (books.isEmpty()) {
-            System.out.println("No books in Library.");
-            return;
-        }
-        System.out.println("\nList of books in the library:");
-        for (book book : books) {
-            book.displayBook();
-        }
-    }
-
-
-    //Search for a book by title
-    public book searchBook(String title) {
+    //Update the Quantity of the books
+    public void updateBookQuantity(String title, int quantity) {
         for (book book : books) {
             if (book.getTitle().equalsIgnoreCase(title)) {
-                return book; // Book found
+                book.updateQuantity(quantity);
+                System.out.println("Updated quantity for book: " + title);
+                return;
+            }
+            
+        }
+        System.out.println("Book not found: " + title);
+    }
+
+
+     // Search for a book by title
+     public void searchBook(String title) {
+        for (book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Book found: " + book);
+                return;
             }
         }
-        return null; // Book not found
+        System.out.println("Book not found: " + title);
     }
-    
+
+    // Show all books in the library
+    public void showAllBooks() {
+        if (books.isEmpty()) {
+            System.out.println("\nNo books available in the library.");
+        } else {
+            System.out.println("\nList of books in the library:");
+            for (book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+
+    // Register a new student
+    public void registerStudent(student student) {
+        students.add(student);
+        System.out.println("Student registered successfully: " + student.getName());
+    }
+
+    // Show all registered students
+    public void showAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("\nNo students are registered yet.");
+        } else {
+            System.out.println("\nList of registered students:");
+            for (student student : students) {
+                System.out.println(student);
+            }
+        }
+    }
 }
