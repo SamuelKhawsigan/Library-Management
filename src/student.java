@@ -1,30 +1,34 @@
 public class student {
-    private String id;
     private String name;
-    private String program;
+    private String studentID;
+    private String course;
 
-    public student(String id, String name, String program) {
-        this.id = id;
+
+    //Constructor
+    public student(String name, String studentID, String course) {
         this.name = name;
-        this.program = program;
-
+        this.studentID = studentID;
+        this.course = course;
     }
 
-    public String getID() {
-        return id;
-    }
-
+    //Getters
     public String getName() {
         return name;
     }
 
-    public String getProgram() {
-        return program;
+    public String getStudentID() {
+        return studentID;
     }
 
+    public String getCourse() {
+        return course;
+
+    }
+
+
+    //toString method to display the student details
     @Override
     public String toString() {
-        return "ID: " + id + ", Name: " + name + ", Program: " + program;
+         return "Student ID: " + studentID + ", Name: " + name + ", Course: " + course;
     }
-    
 }
